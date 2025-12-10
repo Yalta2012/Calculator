@@ -1,0 +1,31 @@
+StartChar: .notdef
+Encoding: 65536 -1 0
+Width: 1695
+GlyphClass: 1
+Flags: W
+LayerCount: 2
+Fore
+SplineSet
+1483 50 m 1
+ 69 50 l 1
+ 776 990 l 1
+ 1483 50 l 1
+50 69 m 1
+ 50 1949 l 1
+ 757 1009 l 1
+ 50 69 l 1
+1502 69 m 1
+ 795 1009 l 1
+ 1502 1949 l 1
+ 1502 69 l 1
+776 1028 m 1
+ 69 1968 l 1
+ 1483 1968 l 1
+ 776 1028 l 1
+0 0 m 1
+ 1552 0 l 1
+ 1552 2018 l 1
+ 0 2018 l 1
+ 0 0 l 1
+EndSplineSet
+EndChar

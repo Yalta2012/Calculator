@@ -1,0 +1,69 @@
+SplineFontDB: 3.2
+FontName: balatro
+FullName: balatro Regular
+FamilyName: balatro
+Weight: Regular
+Copyright: Copyright localthunk 2023
+Version: 1.0
+ItalicAngle: 0
+UnderlinePosition: 150
+UnderlineWidth: 100
+Ascent: 800
+Descent: 200
+InvalidEm: 0
+sfntRevision: 0x00010000
+LayerCount: 2
+Layer: 0 0 "+BBcEMAQ0BD0EOAQ5 +BD8EOwQwBD0A" 1
+Layer: 1 0 "+BB8ENQRABDUENAQ9BDgEOQAA +BD8EOwQwBD0A" 0
+XUID: [1021 820 -865656394 8150]
+StyleMap: 0x0040
+FSType: 4
+OS2Version: 2
+OS2_WeightWidthSlopeOnly: 0
+OS2_UseTypoMetrics: 0
+CreationTime: 1745752038
+ModificationTime: 1765230034
+PfmFamily: 81
+TTFWeight: 400
+TTFWidth: 5
+LineGap: 0
+VLineGap: 0
+Panose: 0 0 4 0 0 0 0 0 0 0
+OS2TypoAscent: 2017
+OS2TypoAOffset: 0
+OS2TypoDescent: 0
+OS2TypoDOffset: 0
+OS2TypoLinegap: 0
+OS2WinAscent: 2017
+OS2WinAOffset: 0
+OS2WinDescent: 0
+OS2WinDOffset: 0
+HheadAscent: 2017
+HheadAOffset: 0
+HheadDescent: 0
+HheadDOffset: 0
+OS2SubXSize: 1000
+OS2SubYSize: 1000
+OS2SubXOff: 0
+OS2SubYOff: 0
+OS2SupXSize: 1000
+OS2SupYSize: 1000
+OS2SupXOff: 0
+OS2SupYOff: 1000
+OS2StrikeYSize: 100
+OS2StrikeYPos: 400
+OS2CapHeight: 1857
+OS2XHeight: 1285
+OS2Vendor: 'FSTR'
+OS2CodePages: 200101ff.cdff0000
+OS2UnicodeRanges: 00000003.00000000.00000000.00000000
+DEI: 91125
+LangName: 1033 "" "" "" "balatro" "" "Version 1.0" "" "FontStruct is a trademark of FontStruct.com" "https://fontstruct.com" "localthunk" "+IBwA-balatro+IB0A was built with FontStruct+AAoA" "https://fontstruct.com/fontstructions/show/2326420/balatro" "https://fontstruct.com/fontstructors/show/2316182/localthunk" "Open Font License" "" "" "" "" "" "Five big quacking zephyrs jolt my wax bed"
+Encoding: UnicodeBmp
+UnicodeInterp: none
+NameList: AGL For New Fonts
+DisplaySize: -24
+AntiAlias: 1
+FitToEm: 0
+WinInfo: 0 37 10
+EndSplineFont

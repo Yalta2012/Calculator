@@ -1,0 +1,23 @@
+StartChar: asciitilde
+Encoding: 126 126 95
+Width: 1000
+GlyphClass: 1
+Flags: W
+LayerCount: 2
+Fore
+SplineSet
+0 714 m 1
+ 143 714 l 1
+ 143 857 l 1
+ 714 857 l 1
+ 714 1000 l 1
+ 857 1000 l 1
+ 857 1286 l 1
+ 714 1286 l 1
+ 714 1143 l 1
+ 143 1143 l 1
+ 143 1000 l 1
+ 0 1000 l 1
+ 0 714 l 1
+EndSplineSet
+EndChar

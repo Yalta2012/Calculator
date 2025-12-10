@@ -1,0 +1,28 @@
+StartChar: Thorn
+Encoding: 222 222 125
+Width: 1142
+GlyphClass: 1
+Flags: W
+LayerCount: 2
+Fore
+SplineSet
+856 714 m 1
+ 571 714 l 1
+ 571 1143 l 1
+ 856 1143 l 1
+ 856 714 l 1
+285 143 m 1
+ 571 143 l 1
+ 571 429 l 1
+ 999 429 l 1
+ 999 571 l 1
+ 1142 571 l 1
+ 1142 1286 l 1
+ 999 1286 l 1
+ 999 1429 l 1
+ 571 1429 l 1
+ 571 1714 l 1
+ 285 1714 l 1
+ 285 143 l 1
+EndSplineSet
+EndChar

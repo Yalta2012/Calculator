@@ -1,0 +1,19 @@
+StartChar: T
+Encoding: 84 84 53
+Width: 1285
+GlyphClass: 1
+Flags: W
+LayerCount: 2
+Fore
+SplineSet
+429 0 m 1
+ 714 0 l 1
+ 714 1571 l 1
+ 1143 1571 l 1
+ 1143 1857 l 1
+ 0 1857 l 1
+ 0 1571 l 1
+ 429 1571 l 1
+ 429 0 l 1
+EndSplineSet
+EndChar

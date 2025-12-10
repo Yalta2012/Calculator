@@ -1,0 +1,35 @@
+StartChar: asterisk
+Encoding: 42 42 11
+Width: 500
+GlyphClass: 1
+Flags: W
+LayerCount: 2
+Fore
+SplineSet
+0 1286 m 1
+ 143 1286 l 1
+ 143 1429 l 1
+ 0 1429 l 1
+ 0 1286 l 1
+286 1286 m 1
+ 429 1286 l 1
+ 429 1429 l 1
+ 286 1429 l 1
+ 286 1286 l 1
+143 1429 m 1
+ 286 1429 l 1
+ 286 1571 l 1
+ 143 1571 l 1
+ 143 1429 l 1
+0 1571 m 1
+ 143 1571 l 1
+ 143 1714 l 1
+ 0 1714 l 1
+ 0 1571 l 1
+286 1571 m 1
+ 429 1571 l 1
+ 429 1714 l 1
+ 286 1714 l 1
+ 286 1571 l 1
+EndSplineSet
+EndChar

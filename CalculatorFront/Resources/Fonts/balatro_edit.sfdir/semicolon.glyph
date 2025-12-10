@@ -1,0 +1,22 @@
+StartChar: semicolon
+Encoding: 59 59 28
+Width: 428
+GlyphClass: 1
+Flags: W
+LayerCount: 2
+Fore
+SplineSet
+143 -143 m 1
+ 286 -143 l 1
+ 286 429 l 1
+ 0 429 l 1
+ 0 143 l 1
+ 143 143 l 1
+ 143 -143 l 1
+0 857 m 1
+ 286 857 l 1
+ 286 1143 l 1
+ 0 1143 l 1
+ 0 857 l 1
+EndSplineSet
+EndChar

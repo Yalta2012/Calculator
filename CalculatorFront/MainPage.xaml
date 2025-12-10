@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CalculatorFront.MainPage"
+             BackgroundColor="#3A484A"
+             >
+
+    <ContentPage.Resources>
+        
+        <ResourceDictionary>
+            <Color x:Key="BalatroGreen">#3BA477</Color>
+            <Color x:Key="BalatroBlue">#0097FF</Color>
+            <Color x:Key="BalatroRed">#FF4439</Color>
+            <Color x:Key="BalatroOrange">#FF5900</Color>
+            <Color x:Key="BalatroCardGrey">#ABC2CF</Color>
+            <Color x:Key="BalatroDarkGrey">#1A2828</Color>
+
+
+            <Style x:Key="BaseLabelStyle" TargetType="Label">
+                <Setter Property="Margin" Value="4"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource BalatroDarkGrey}"/>
+                <Setter Property="TextColor" Value="{StaticResource BalatroRed}"/>
+                <Setter Property="FontFamily" Value="Balatro"/>
+                <Setter Property="Padding" Value="10"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="End"/>
+            </Style>
+            
+            
+            
+            <Style x:Key="BaseButtonStyle" TargetType="Button">
+                <Setter Property="Text" Value="ButtonText"/>
+                <Setter Property="Margin" Value="3,6"/>
+                <Setter Property="BackgroundColor" Value="Orange"/>
+                <Setter Property="BorderWidth" Value="1"/>
+                <Setter Property="FontFamily" Value="Balatro"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="Padding" Value="10"/>
+                <Setter Property="CornerRadius" Value="17"/>
+                <Setter Property="Command" Value=""/>
+                <Setter Property="CommandParameter" Value="{Binding Source={RelativeSource Self}, Path=Text}"/>
+
+
+                <Setter Property="Shadow">
+                    <Shadow Brush="{StaticResource BalatroDarkGrey}" Offset="0,10" Radius="1" Opacity="1"/>
+                </Setter>
+
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="Scale" Value="1"/>
+                                    <Setter Property="Opacity" Value="1"/>
+                                </VisualState.Setters>
+                            </VisualState>
+
+                            <VisualState x:Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter Property="Opacity" Value="0.95"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                            
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="TranslationY" Value="5"/>
+                                    <Setter Property="Opacity" Value="0.95"/>
+
+                                    <Setter Property="ScaleY" Value="0.98"/>
+                                    
+                                    <Setter Property="Shadow">
+                                        <Shadow Opacity="0"/>
+                                    </Setter>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+                
+            </Style>
+
+            
+
+
+             
+            <Style x:Key="DigitButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+                <Setter Property="BackgroundColor" Value="{StaticResource BalatroCardGrey}"/>
+                <Setter Property="Command" Value="{Binding InputDigitCommand}"/>
+            </Style>
+
+            
+            <Style x:Key="OperationButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+                <Setter Property="BackgroundColor" Value="{StaticResource BalatroBlue}"/>
+            </Style>
+
+
+            <Style x:Key="UnaryOperationButtonStyle" TargetType="Button" BasedOn="{StaticResource OperationButtonStyle}">
+                <Setter Property="Command" Value="{Binding InputUnaryOperatorCommand}"/>
+            </Style>
+
+            <Style x:Key="BinartOperationButtonStyle" TargetType="Button" BasedOn="{StaticResource OperationButtonStyle}">
+                <Setter Property="Command" Value="{Binding InputBinaryOperatorCommand}"/>
+
+            </Style>
+
+            
+            <Style x:Key="MemoryButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+                <Setter Property="BackgroundColor" Value="{StaticResource BalatroOrange}"/>
+            </Style>
+
+            <Style x:Key="ClearButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+                <Setter Property="BackgroundColor" Value="{StaticResource BalatroRed}"/>
+                <Setter Property="Command" Value="{Binding ClearCommand}"/>
+            </Style>
+
+            <Style x:Key="EqualButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+                <Setter Property="BackgroundColor" Value="{StaticResource BalatroGreen}"/>
+                <Setter Property="Command" Value="{Binding CalculateCommand}"/>
+
+            </Style>
+            
+            <Style TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}"/>
+            <Style TargetType="Label" BasedOn="{StaticResource BaseLabelStyle}"/>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+        <Grid RowDefinitions="*,*,*,*,*,*,*,*"
+      ColumnDefinitions="*, *, *, *"
+      Margin="20"
+      VerticalOptions="Fill"
+      HorizontalOptions="Fill"
+         
+      >
+            <Label Text="{Binding Display}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"/>
+            <Grid Grid.Row="1" Grid.Column="0"
+            RowDefinitions="Auto"
+          ColumnDefinitions="*,*,*,*,*"
+          Grid.ColumnSpan="2"
+          VerticalOptions="Center"
+        >
+                <Button Text="MC" Grid.Column="0" Style="{StaticResource MemoryButtonStyle}"/>
+                <Button Text="MR" Grid.Column="1" Style="{StaticResource MemoryButtonStyle}"/>
+                <Button Text="M+" Grid.Column="2" Style="{StaticResource MemoryButtonStyle}"/>
+                <Button Text="M-" Grid.Column="3" Style="{StaticResource MemoryButtonStyle}"/>
+                <Button Text="MS" Grid.Column="4" Style="{StaticResource MemoryButtonStyle}"/>
+            </Grid>
+
+            <Button Text="%" Grid.Row="2" Grid.Column="0" Style="{StaticResource UnaryOperationButtonStyle}"/>
+            <Button Text="CE" Grid.Row="2" Grid.Column="1" Style="{StaticResource ClearButtonStyle}"/>
+            <Button Text="C" Grid.Row="2" Grid.Column="2" Style="{StaticResource ClearButtonStyle}"/>
+            <Button Text="⌫" Grid.Row="2" Grid.Column="3" Style="{StaticResource ClearButtonStyle}"/>
+
+            <Button Text="1/x" Grid.Row="3" Grid.Column="0" Style="{StaticResource UnaryOperationButtonStyle}"/>
+            <Button Text="x^2" Grid.Row="3" Grid.Column="1" Style="{StaticResource UnaryOperationButtonStyle}"/>
+            <Button Text="√x" Grid.Row="3" Grid.Column="2" Style="{StaticResource UnaryOperationButtonStyle}"/>
+            <Button Text="/" Grid.Row="3" Grid.Column="3" Style="{StaticResource BinartOperationButtonStyle}"/>
+
+            <Button Text="7" Grid.Row="4" Grid.Column="0" Style="{StaticResource DigitButtonStyle}"/>
+            <Button Text="8" Grid.Row="4" Grid.Column="1" Style="{StaticResource DigitButtonStyle}"/>
+            <Button Text="9" Grid.Row="4" Grid.Column="2" Style="{StaticResource DigitButtonStyle}"/>
+            <Button Text="*" Grid.Row="4" Grid.Column="3" Style="{StaticResource BinartOperationButtonStyle}"/>
+
+            <Button Text="4" Grid.Row="5" Grid.Column="0" Style="{StaticResource DigitButtonStyle}"/>
+            <Button Text="5" Grid.Row="5" Grid.Column="1" Style="{StaticResource DigitButtonStyle}"/>
+            <Button Text="6" Grid.Row="5" Grid.Column="2" Style="{StaticResource DigitButtonStyle}"/>
+            <Button Text="-" Grid.Row="5" Grid.Column="3" Style="{StaticResource BinartOperationButtonStyle}"/>
+
+            <Button Text="1" Grid.Row="6" Grid.Column="0" Style="{StaticResource DigitButtonStyle}"/>
+            <Button Text="2" Grid.Row="6" Grid.Column="1" Style="{StaticResource DigitButtonStyle}"/>
+            <Button Text="3" Grid.Row="6" Grid.Column="2" Style="{StaticResource DigitButtonStyle}"/>
+            <Button Text="+" Grid.Row="6" Grid.Column="3" Style="{StaticResource BinartOperationButtonStyle}"/>
+
+            <Button Text="+/-" Grid.Row="7" Grid.Column="0" Style="{StaticResource UnaryOperationButtonStyle}"/>
+            <Button Text="0" Grid.Row="7" Grid.Column="1" Style="{StaticResource DigitButtonStyle}"/>
+            <Button Text="," Grid.Row="7" Grid.Column="2" Style="{StaticResource DigitButtonStyle}"/>
+            <Button Text="=" Grid.Row="7" Grid.Column="3" Style="{StaticResource EqualButtonStyle}"/>
+
+        </Grid>
+
+
+</ContentPage>

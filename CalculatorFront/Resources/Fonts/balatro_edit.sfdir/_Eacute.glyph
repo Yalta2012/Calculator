@@ -1,0 +1,32 @@
+StartChar: Eacute
+Encoding: 201 201 105
+Width: 1285
+GlyphClass: 1
+Flags: W
+LayerCount: 2
+Fore
+SplineSet
+285 0 m 1
+ 1285 0 l 1
+ 1285 286 l 1
+ 571 286 l 1
+ 571 857 l 1
+ 1142 857 l 1
+ 1142 1143 l 1
+ 571 1143 l 1
+ 571 1571 l 1
+ 1285 1571 l 1
+ 1285 1857 l 1
+ 285 1857 l 1
+ 285 0 l 1
+571 2000 m 1
+ 856 2000 l 1
+ 856 2143 l 1
+ 1142 2143 l 1
+ 1142 2429 l 1
+ 856 2429 l 1
+ 856 2286 l 1
+ 571 2286 l 1
+ 571 2000 l 1
+EndSplineSet
+EndChar

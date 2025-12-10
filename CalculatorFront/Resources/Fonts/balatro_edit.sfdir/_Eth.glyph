@@ -1,0 +1,32 @@
+StartChar: Eth
+Encoding: 208 208 112
+Width: 1285
+GlyphClass: 1
+Flags: W
+LayerCount: 2
+Fore
+SplineSet
+857 286 m 1
+ 429 286 l 1
+ 429 857 l 1
+ 571 857 l 1
+ 571 1143 l 1
+ 429 1143 l 1
+ 429 1571 l 1
+ 857 1571 l 1
+ 857 286 l 1
+143 0 m 1
+ 1000 0 l 1
+ 1000 143 l 1
+ 1143 143 l 1
+ 1143 1714 l 1
+ 1000 1714 l 1
+ 1000 1857 l 1
+ 143 1857 l 1
+ 143 1143 l 1
+ 0 1143 l 1
+ 0 857 l 1
+ 143 857 l 1
+ 143 0 l 1
+EndSplineSet
+EndChar

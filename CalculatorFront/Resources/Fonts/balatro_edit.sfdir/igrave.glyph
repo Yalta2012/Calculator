@@ -1,0 +1,20 @@
+StartChar: igrave
+Encoding: 236 236 138
+Width: 571
+GlyphClass: 1
+Flags: W
+LayerCount: 2
+Fore
+SplineSet
+285 0 m 1
+ 571 0 l 1
+ 571 1286 l 1
+ 285 1286 l 1
+ 285 0 l 1
+285 1571 m 1
+ 571 1571 l 1
+ 571 1857 l 1
+ 285 1857 l 1
+ 285 1571 l 1
+EndSplineSet
+EndChar

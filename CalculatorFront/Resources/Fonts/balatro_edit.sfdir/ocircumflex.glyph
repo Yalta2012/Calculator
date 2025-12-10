@@ -1,0 +1,28 @@
+StartChar: ocircumflex
+Encoding: 244 244 145
+Width: 1285
+GlyphClass: 1
+Flags: W
+LayerCount: 2
+Fore
+SplineSet
+999 286 m 1
+ 571 286 l 1
+ 571 1000 l 1
+ 999 1000 l 1
+ 999 286 l 1
+428 0 m 1
+ 1142 0 l 1
+ 1142 143 l 1
+ 1285 143 l 1
+ 1285 1143 l 1
+ 1142 1143 l 1
+ 1142 1286 l 1
+ 428 1286 l 1
+ 428 1143 l 1
+ 285 1143 l 1
+ 285 143 l 1
+ 428 143 l 1
+ 428 0 l 1
+EndSplineSet
+EndChar

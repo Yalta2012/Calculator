@@ -10,7 +10,8 @@ namespace CalculatorBack;
 public class Calc : INotifyPropertyChanged // ICalc, 
 {
     private String _display = "0";
-    private String _firstOperand = "0";
+    private String? _firstOperand = "";
+    private String? _secondOperand = "";
     private String? _operator;
     private bool isFloat = false;
     private bool isError = false;
@@ -38,7 +39,7 @@ public class Calc : INotifyPropertyChanged // ICalc,
         //CurrentCollection = new ObservableCollection<CollectionItemWrapper>();
         _binaryOperationMap.Add("+", (x, y) => { return x + y; });
         _binaryOperationMap.Add("-", (x, y) => { return x - y; });
-        _binaryOperationMap.Add("x", (x, y) => { return x * y; });
+        _binaryOperationMap.Add("*", (x, y) => { return x * y; });
         _binaryOperationMap.Add("/", (x, y) => { return x / y; });
 
         _binaryOperationMap.Add("%", (x, y) => { return -x; });
@@ -62,6 +63,11 @@ public class Calc : INotifyPropertyChanged // ICalc,
     }
     public void Input(String inputString)
     {
+        if (_firstOperand != null && _operator != null  && _secondOperand != "")
+        {
+            _secondOperand = "";
+            Display = "";
+        }
         if (Display == "0")
         {
             if (inputString == ",")
@@ -86,16 +92,31 @@ public class Calc : INotifyPropertyChanged // ICalc,
 
     public void InputBinaryOperator(String inputString)
     {
+
+        if(null == _operator)
+        {
+            _firstOperand = Display;
+            _secondOperand = null;
+        }
+        else if ( _secondOperand != "")
+        {
+            //_operator = inputString;
+            _secondOperand = Display;
+            Display = _binaryOperationMap[_operator](Double.Parse(_firstOperand), Double.Parse(_secondOperand)).ToString();
+            _secondOperand = null;
+            Normalize();
+
+        }
         _operator = inputString;
-        _firstOperand = Display;
-        Display = "0";
         OnPropertyChanged(nameof(Display));
     }
 
     public void Calculate(String s)
     {
         if (_operator == null) return;
-        Display = _binaryOperationMap[_operator]( Double.Parse(_firstOperand), Double.Parse(Display)).ToString();
+        if(_secondOperand == null || _secondOperand == "") _secondOperand = Display;
+        Display = _binaryOperationMap[_operator]( Double.Parse(_firstOperand), Double.Parse(_secondOperand)).ToString();
+        _firstOperand = Display;
         Normalize();
         OnPropertyChanged(nameof(Display));
     }
@@ -109,13 +130,15 @@ public class Calc : INotifyPropertyChanged // ICalc,
                 break;
             case "C":
                 Display = "0";
-                _firstOperand = "0";
+                _firstOperand = null;
+                _secondOperand = null;
+                _operator = null;
                 break;
             case "⌫":
-                if (Math.Abs(Double.Parse(Display)).ToString().Length > 1)
-                    Display = Display.Substring(0, Display.Length - 1);
-                else
+                if (Display.StartsWith("-") && Display.Length == 2 || Display.Length == 1)
                     Display = "0";
+                else
+                    Display = Display.Substring(0, Display.Length - 1);
                     break;
             default:
                 break;

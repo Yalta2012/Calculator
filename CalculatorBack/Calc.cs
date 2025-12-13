@@ -1,123 +1,389 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
-
+using Microsoft.Maui.Controls;
 
 namespace CalculatorBack;
 
+public enum CalculatorCondition
+{
+    Input,
+    Operator,
+    Equal,
+    Error
+}
+
+public class JournalItem : INotifyPropertyChanged
+{
+    public String? FirstOperator { get; set; }
+    public String? SecondOperator { get; set; }
+    public String? Operator { get; set; }
+    private string? _display;
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public string? Display
+    {
+        get => _display;
+        set
+        {
+            if (_display != value)
+            {
+                _display = value;
+                OnPropertyChanged(nameof(Display));
+            }
+        }
+    }
+    public CalculatorCondition Condition { get; set; }
+    public JournalItem(String fo, String so, String op, String dsp, CalculatorCondition cnd) {
+        FirstOperator = fo;
+        SecondOperator = so;
+        Operator = op;
+        Display = dsp;
+        Condition = cnd;
+    }
+
+    override public String ToString()
+    {
+        return (FirstOperator ?? "") + " " + (Operator ?? "") + " " + (SecondOperator == null ? "" : FirstOperator == null ? Display : SecondOperator) + " = " + (Display ?? "");
+    }
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+}
 
 public class Calc : INotifyPropertyChanged // ICalc, 
 {
     private String _display = "0";
-    private String? _firstOperand = "";
-    private String? _secondOperand = "";
-    private String? _operator;
-    private bool isFloat = false;
-    private bool isError = false;
+    private String? _firstOperand = null;
+    private String? _secondOperand = null;
+    private String? _operator = null;
+    private bool _isFloat = false;
+    private bool _showMemoryMemoryButtons = false;
+    private bool _showCalculatorMemoryButtons = false;
+    private CalculatorCondition _condition = CalculatorCondition.Input;
     private readonly Dictionary<string, Func<double, double, double>> _binaryOperationMap = new();
     private readonly Dictionary<string, Func<double, double>> _unaryOperationMap = new();
+   
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public ICommand InputDigitCommand { get; private set; }
-    public ICommand InputUnaryOperatorCommand { get; private set; }
-    public ICommand InputBinaryOperatorCommand { get; private set; }
-    public ICommand ClearCommand { get; private set; }
-    public ICommand CalculateCommand { get; private set; }
+    public ObservableCollection<JournalItem> Journal { get; private set; } = new ObservableCollection<JournalItem>();
+    public ObservableCollection<JournalItem> Memory { get; private set; } = new ObservableCollection<JournalItem>();
 
+    public ObservableCollection<JournalItem> CurrentCollection { get; private set; } = new ObservableCollection<JournalItem>();
+    public ICommand InputCommand { get; private set; }
+    public ICommand LoadFromJournalCommand { get; private set; }
+    public ICommand ClearCurrentCollectionCommand { get; private set; }
+
+    public ICommand ShowJournalCommand { get; private set; }
+    public ICommand ShowMemoryCommand { get; private set; }
+
+    public String Display
+    {
+        get => _display;
+        private set
+        {
+            _display = value;
+            OnPropertyChanged(nameof(Display));
+        }
+    }
+
+    public bool ShowMemoryMemoryButtons
+    {
+        get => _showMemoryMemoryButtons;
+        private set
+        {
+            _showMemoryMemoryButtons = value;
+            OnPropertyChanged(nameof(ShowMemoryMemoryButtons));
+        }
+    }
     public Calc()
     {
-        //InputCommand = new CalculatorCommand(Input);
-        
-        //LoadFromJournalCommand = new CalculatorCommand(x => Display = Convert.ToDouble(x));
-        //MemoryCommand = new CalculatorCommand(MemoryCalc);
-        //DeleteButtonsCommand = new CalculatorCommand(DeleteCalc);
 
-        //RemoveMemoryItemCommand = new GenericCommand<CollectionItemWrapper>(RemoveMemoryItem);
-        //AddToMemoryItemCommand = new GenericCommand<CollectionItemWrapper>(AddToMemoryItem);
-        //SubtractFromMemoryItemCommand = new GenericCommand<CollectionItemWrapper>(SubtractFromMemoryItem);
-        //CurrentCollection = new ObservableCollection<CollectionItemWrapper>();
         _binaryOperationMap.Add("+", (x, y) => { return x + y; });
         _binaryOperationMap.Add("-", (x, y) => { return x - y; });
         _binaryOperationMap.Add("*", (x, y) => { return x * y; });
         _binaryOperationMap.Add("/", (x, y) => { return x / y; });
 
-        _binaryOperationMap.Add("%", (x, y) => { return -x; });
+        _binaryOperationMap.Add("%", (x, y) => { return x * y / 100; });
         _binaryOperationMap.Add("1/x", (x, y) => { return 1 / x; });
         _binaryOperationMap.Add("x^2", (x, y) => { return x * x; });
         _binaryOperationMap.Add("√x", (x, y) => { return Math.Sqrt(x); });
         _binaryOperationMap.Add("+/-", (x, y) => { return -x; });
 
-        _unaryOperationMap.Add("%", (x) => { return -x; });
+        //_unaryOperationMap.Add("%", (x) => { return -x; });
         _unaryOperationMap.Add("1/x", (x) => { return 1/x; });
         _unaryOperationMap.Add("x^2", (x) => { return x*x; });
         _unaryOperationMap.Add("√x", Math.Sqrt );
         _unaryOperationMap.Add("+/-", (x) => { return -x; });
 
-        InputDigitCommand = new CalculatorCommand(Input);
-        InputUnaryOperatorCommand = new CalculatorCommand(InputUnaryOperator);
-        InputBinaryOperatorCommand = new CalculatorCommand(InputBinaryOperator);
-        ClearCommand = new CalculatorCommand(InputClear);
-        CalculateCommand = new CalculatorCommand(Calculate);
+        InputCommand = new Command<String>(Input);
+        LoadFromJournalCommand = new Command<JournalItem>(LoadFromJournal);
+        ClearCurrentCollectionCommand = new Command(ClearCurrentCollection);
 
+        ShowJournalCommand = new Command(ShowJournal);
+        ShowMemoryCommand = new Command(ShowMemory);
+
+
+        //MemoryCommand = new Command<String>(MemoryInput);
+        CurrentCollection = Journal;
+
+    }  
+
+    private void MemoryInput(String inputString)
+    {
+        switch (inputString)
+        {
+            case "MC":
+                Memory.Clear();
+                break;
+            case "MR":
+                if (Memory.Count() > 0)
+                    Display = Memory.Last().Display;
+                break;
+            case "M+":
+                if (Memory.Count() > 0)
+                {
+                    Memory.Last().Display = Calculate(Memory.Last().Display, "+", Display);
+                    CurrentCollection = Memory;
+                    OnPropertyChanged(nameof(CurrentCollection));
+                }
+
+                break;
+            case "M-":
+                if (Memory.Count() > 0)
+                {
+                    Memory.Last().Display = Calculate(Memory.Last().Display, "-", Display);
+                    CurrentCollection = Memory;
+                    OnPropertyChanged(nameof(CurrentCollection));
+                }
+
+                break;
+            case "MS":
+                Memory.Add(new JournalItem(null, null, null, Display, CalculatorCondition.Input));
+                _condition = CalculatorCondition.Equal;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void ShowJournal()
+    {
+        _showMemoryMemoryButtons = false;
+        CurrentCollection = Journal;
+        OnPropertyChanged(nameof(CurrentCollection));
+    }
+    private void ShowMemory()
+    {
+        _showMemoryMemoryButtons = true;
+        CurrentCollection = Memory;
+        OnPropertyChanged(nameof(CurrentCollection));
+
+    }
+    private String Calculate(String first, String op)
+    {
+        var result =  _unaryOperationMap[op](Double.Parse(first));
+        if (!Double.IsFinite(result))
+        {
+            _condition = CalculatorCondition.Error;
+            _firstOperand = null;
+            _secondOperand = null;
+            _operator = null;
+            return "Error";
+        }
+        //SaveToJournal();
+        return result.ToString();
+    }
+
+    private String Calculate(String first, String op, String second)
+    {
+        var result = _binaryOperationMap[op](Double.Parse(first), Double.Parse(second));
+        if (!Double.IsFinite(result))
+        {
+            _condition = CalculatorCondition.Error;
+            return "Error";
+        }
+        //aveToJournal();
+        return result.ToString();
     }
     public void Input(String inputString)
     {
-        if (_firstOperand != null && _operator != null  && _secondOperand != "")
+        if (",0123456789".Contains(inputString))
         {
-            _secondOperand = "";
-            Display = "";
+            InputDigit(inputString);
+            return;
         }
-        if (Display == "0")
+        if(inputString == "=")
         {
-            if (inputString == ",")
-                Display = Display + inputString;
-            else if (inputString != "0")
+            Equal();
+            return;
+        }
+        if ("+-/*".Contains(inputString))
+        {
+            InputBinaryOperator(inputString);
+            return;
+        }
+        if ("CE⌫".Contains(inputString))
+        {
+            InputClear(inputString);
+            return;
+        }
+        if(inputString == "%")
+        {
+            CalculatePercent();
+            return;
+        }
+        if("MCMRM+M-MS".Contains(inputString))
+        {
+            MemoryInput(inputString);
+            return;
+        }
+        InputUnaryOperator(inputString);
+    }
+    private void AddSymbol(String symbol)
+    {
+        if (_isFloat && symbol == ",") return;
+        if (symbol == ",")
+            _isFloat = true;
+        else if (Display == "0")
+            Display = "";
+        Display += symbol;
+    }
+    public void InputDigit(String inputString)
+    {
+        if (_condition == CalculatorCondition.Error || _condition == CalculatorCondition.Equal)
+        {
+            Display = inputString;
+            _firstOperand = null;
+            _secondOperand = null;
+            _operator = null;
+        }
+        else if (_firstOperand == null)
+        {
+            AddSymbol(inputString);
+        }
+        else if (_secondOperand == null)
+        {
+            if (_condition == CalculatorCondition.Input)
+            {
+                AddSymbol(inputString);
+                //_firstOperand = null;
+                //_secondOperand = null;
+                //_operator = null;
+            }
+            else
                 Display = inputString;
         }
-        else if (inputString != "," || !isFloat)
-                Display += inputString;
-        if (inputString == ",") isFloat = true;
-        OnPropertyChanged(nameof(Display));
-
-    }
-
-    public void InputUnaryOperator(String inputString)
-    {
-        if (Display == "0" && inputString == "+/-") return;
-        Display = _unaryOperationMap[inputString](Double.Parse(Display)).ToString();
+        else
+        {
+            Display = inputString;
+            _firstOperand = null;
+            _secondOperand = null;
+            _operator = null;
+        }
         Normalize();
         OnPropertyChanged(nameof(Display));
+        _condition = CalculatorCondition.Input;
+
     }
 
-    public void InputBinaryOperator(String inputString)
+    private void CalculatePercent()
     {
+        if (_condition == CalculatorCondition.Error) return;
+        _condition = CalculatorCondition.Operator;
+        Display = Calculate(_firstOperand ?? "0", "%", Display);
+        _firstOperand = null;
+        _secondOperand = null;
+        _operator = null;
+        OnPropertyChanged(nameof(Display));
 
-        if(null == _operator)
+    }
+    private void InputUnaryOperator(String inputString)
+    {
+        if (Display == "0" && inputString == "+/-" || _condition == CalculatorCondition.Error) return;
+        _condition = CalculatorCondition.Operator;
+        Display = Calculate(Display, inputString);
+        _firstOperand = null;
+        _secondOperand = null;
+        _operator = null;
+        //if(_condition != CalculatorCondition.Error) SaveToJournal();
+        OnPropertyChanged(nameof(Display));
+
+    }
+
+    private void InputBinaryOperator(String inputString)
+    {
+        if (_condition == CalculatorCondition.Error) return;
+        if (_condition == CalculatorCondition.Operator)
+        {
+            _operator = inputString;
+            return;
+        }
+        if (_firstOperand == null)
         {
             _firstOperand = Display;
-            _secondOperand = null;
         }
-        else if ( _secondOperand != "")
+        else
         {
-            //_operator = inputString;
-            _secondOperand = Display;
-            Display = _binaryOperationMap[_operator](Double.Parse(_firstOperand), Double.Parse(_secondOperand)).ToString();
-            _secondOperand = null;
-            Normalize();
+            if(_condition != CalculatorCondition.Equal) {
+                Display = Calculate(_firstOperand, _operator, Display);
+                if (_condition != CalculatorCondition.Error) SaveToJournal();
 
+            }
+            _secondOperand = null;
+            _firstOperand = Display;
         }
         _operator = inputString;
+
+        if(_condition != CalculatorCondition.Equal)
+            _condition = CalculatorCondition.Operator;
+        Normalize();
         OnPropertyChanged(nameof(Display));
+
     }
 
-    public void Calculate(String s)
+    public void Equal()
     {
-        if (_operator == null) return;
-        if(_secondOperand == null || _secondOperand == "") _secondOperand = Display;
-        Display = _binaryOperationMap[_operator]( Double.Parse(_firstOperand), Double.Parse(_secondOperand)).ToString();
-        _firstOperand = Display;
-        Normalize();
+        if (_condition == CalculatorCondition.Error) return;
+
+        if(_firstOperand == null /*|| _operator == null*/)
+        {
+           //_firstOperand = Display;
+            SaveToJournal();
+
+        }
+       
+        else if (_secondOperand == null && _operator != null)
+        {
+
+            _secondOperand = Display;
+            Display = Calculate(_firstOperand, _operator, Display);
+            Normalize();
+            SaveToJournal();
+
+            _firstOperand = Display;
+
+
+        }
+        else if (_operator != null)
+        {
+            Display = Calculate(_firstOperand, _operator, _secondOperand);
+            Normalize();
+            SaveToJournal();
+
+            _firstOperand = Display;
+
+        }
+
+        if (_condition != CalculatorCondition.Error)
+        {
+            _condition = CalculatorCondition.Equal;
+        }
         OnPropertyChanged(nameof(Display));
     }
 
@@ -143,407 +409,48 @@ public class Calc : INotifyPropertyChanged // ICalc,
             default:
                 break;
         }
-        Normalize();
+        //Normalize();
         OnPropertyChanged(nameof(Display));
+        _condition = CalculatorCondition.Input;
+        _isFloat = false;
+
     }
 
-    public String Display
-    {
-        get => _display;
-        private set
-        {
-            _display = value;
-            OnPropertyChanged(nameof(Display));
-        }
-    }
+
     private void Normalize()
     {
-        isFloat = Display.Contains(",");
+        _isFloat = Display.Contains(",");
+        if (Display == ",") Display = "0,";
     }
     private void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
+    private void LoadFromJournal(JournalItem journalItem)
+    {
+        _firstOperand = journalItem.FirstOperator;
+        _secondOperand = journalItem.SecondOperator;
+        _operator = journalItem.Operator;
+        _condition = journalItem.Condition;
+        Display = journalItem.Display;
+        OnPropertyChanged(nameof(Display));
+    }
+
+    private void SaveToJournal()
+    {
+        Journal.Add( new JournalItem(_firstOperand, _secondOperand, _operator, _display, _condition));
+        OnPropertyChanged(nameof(Journal));
+    }
+
+    public void ClearCurrentCollection()
+    {
+        CurrentCollection.Clear();
+    }
+
 }
 
-public class CalculatorCommand: ICommand
-{
-    private Action<string> _action;
-
-    public CalculatorCommand(Action<string> action)
-    {
-        _action = action;
-    }
-
-    public void Execute(object? parameter)
-    {
-        _action(parameter.ToString());
-    }
-
-    public event EventHandler? CanExecuteChanged;
-
-    public bool CanExecute(object? parameter)
-    {
-        return true;
-    }
-}
-//public string ToggleButtonText => _showMemory ? "Память" : "Журнал";
-//public ICommand RemoveMemoryItemCommand { get; private set; }
-//public ICommand DeleteButtonsCommand { get; private set; }
-
-//public ICommand AddToMemoryItemCommand { get; private set; }
-//public ICommand SubtractFromMemoryItemCommand { get; private set; }
-//public ObservableCollection<CollectionItemWrapper> CurrentCollection { get; private set; }
-
-//public bool IsMemoryEmpty
-//{
-//    get => _memory.Count == 0;
-//}
-//public double Display
-//{
-//    get => display;
-//    private set
-//    {
-//        display = value;
-//        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Display)));
-//    }
-//}
-
-
-//private bool _showMemory = false;
-//private double? _firstOparand = null;
-//private double? _secondOparand = null;
-
-//private readonly Dictionary<string, Func<double, double, double>> _operationMap = new();
-//private Func<double, double, double> _operation;
-//private double display;
-
-//public event PropertyChangedEventHandler? PropertyChanged;
-//public bool ShowMemoryButtons => _showMemory;
-
-//public ICommand InputCommand { get; private set; }
-//public ICommand MemoryCommand { get; private set; }
-
-//public ICommand LoadFromJournalCommand { get; private set; }
-//private ObservableCollection<MemoryItem> _memory = new ObservableCollection<MemoryItem>();
-
-//public ObservableCollection<MemoryItem> MemoryCollection => new ObservableCollection<MemoryItem>(_memory);
-//public ObservableCollection<double> Journal { get; } = new();
-
-
-//public string CollectionTitle => _showMemory ? "Память" : "Журнал";
-//private bool _needToClean = false;
-//private void DeleteCalc(string inputString)
-//{
-//    if (inputString == "C")
-//    {
-//        _firstOparand = null;
-//        _secondOparand = null;
-//        _operation = null;
-//        Display = 0;
-//    }
-//    else if (inputString == "CE")
-//    {
-//        Display = 0;
-//    }
-//    else
-//    {
-
-//    }
-//}
-//private void Input(string inputString)
-//{
-//    var isOperation = _operationMap.ContainsKey(inputString);
-//    if (isOperation)
-//    {
-//        if (_operation != null && _firstOparand.HasValue)
-//        {
-//            Calculate();
-//        }
-//        _operation = _operationMap[inputString];
-//        _secondOparand = null;
-//        return;
-//    }
-
-//    if (inputString == "=" && _operation != null)
-//    {
-//        Calculate();
-//        return;
-//    }
-
-//    if (_operation != null && _firstOparand == null && _secondOparand.HasValue)
-//    {
-//        Reset();
-//    }
-
-//    if (_operation != null && _firstOparand == null)
-//    {
-//        _firstOparand = Display;
-//        Display = 0;
-//    }
-//    if (_needToClean)
-//    {
-//        _needToClean = false;
-//        Display = 0;
-//    }
-
-//    if (Display == 0 && _operation == null)
-//    {
-//        if (inputString != "=")
-//            Display = Convert.ToDouble(inputString);
-//    }
-//    else
-//    {
-//        if (inputString != "=")
-//            Display = Display * 10 + Convert.ToDouble(inputString);
-//    }
-
-//}
-//private void UpdateCurrentCollection()
-//{
-//    CurrentCollection.Clear();
-
-//    if (_showMemory)
-//    {
-//        foreach (var memoryItem in _memory)
-//        {
-//            CurrentCollection.Add(new CollectionItemWrapper(memoryItem));
-//        }
-//    }
-//    else
-//    {
-//        foreach (var journalValue in Journal)
-//        {
-//            CurrentCollection.Add(new CollectionItemWrapper(journalValue));
-//        }
-
-//    }
-
-//    OnPropertyChanged(nameof(CurrentCollection));
-//}
-
-//private void MemoryCalc(string inputString)
-//{
-//    switch (inputString)
-//    {
-//        case "MS":
-//            var newItem = new MemoryItem(Display);
-//            _memory.Insert(0, newItem);
-//            _firstOparand = null;
-//            _operation = null;
-//            _secondOparand = null;
-//            _needToClean = true;
-//            if (_showMemory)
-//                CurrentCollection.Insert(0, new CollectionItemWrapper(newItem));
-//            break;
-//        case "MC":
-//            _memory.Clear();
-//            if (_showMemory) UpdateCurrentCollection();
-//            break;
-//        case "M+":
-//            _memory[0].Value += Convert.ToDouble(Display);
-//            if (_showMemory) UpdateCurrentCollection();
-//            break;
-//        case "M-":
-//            _memory[0].Value -= Convert.ToDouble(Display);
-//            if (_showMemory) UpdateCurrentCollection();
-//            break;
-//        case "MR" when _memory.Count > 0:
-//            Display = _memory[0].Value;
-//            break;
-//        case "TOGGLE_MEMORY":
-//            _showMemory = !_showMemory;
-//            UpdateCurrentCollection();
-//            break;
-//    }
-//    UpdateMemoryProperties();
-//}
-//private void OnPropertyChanged(string propertyName)
-//{
-//    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-//}
-//private void Calculate()
-//{
-//    _firstOparand ??= Display;
-//    _secondOparand ??= Display;
-//    try
-//    {
-//        Display = _operation(_firstOparand.Value, _secondOparand.Value);
-
-//        if (double.IsNaN(Display))
-//        {
-//            Display = 0;
-//            throw new InvalidOperationException("Результат операции не определён");
-//        }
-
-//        if (double.IsInfinity(Display))
-//        {
-//            Display = 0;
-//            throw new InvalidOperationException("Результат операции не определён");
-//        }
-//    }
-//    catch (Exception e)
-//    {
-//        Display = 0;
-//        return;
-//    }
-//    _firstOparand = null;
-
-//    Journal.Insert(0, Display);
-//    UpdateCurrentCollection();
-//    UpdateMemoryProperties();
-//}
-
-//private void Reset()
-//{
-//    Display = 0;
-//    _firstOparand = null;
-//    _secondOparand = null;
-//    _operation = null;
-//}
-
-
-
-//private void RemoveMemoryItem(CollectionItemWrapper wrapper)
-//{
-//    if (wrapper?.MemoryItem != null)
-//    {
-//        _memory.Remove(wrapper.MemoryItem);
-//        CurrentCollection.Remove(wrapper);
-//        UpdateMemoryProperties();
-//    }
-//}
-
-//private void AddToMemoryItem(CollectionItemWrapper wrapper)
-//{
-//    if (wrapper?.MemoryItem != null)
-//    {
-//        wrapper.MemoryItem.Value += Display;
-//        UpdateMemoryProperties();
-//    }
-//}
-
-//private void SubtractFromMemoryItem(CollectionItemWrapper wrapper)
-//{
-//    if (wrapper?.MemoryItem != null)
-//    {
-//        wrapper.MemoryItem.Value -= Display;
-//        UpdateMemoryProperties();
-//    }
-//}
-//private void UpdateMemoryProperties()
-//{
-//    OnPropertyChanged(nameof(IsMemoryEmpty));
-//    OnPropertyChanged(nameof(ShowMemoryButtons));
-//    OnPropertyChanged(nameof(ToggleButtonText));
-//    OnPropertyChanged(nameof(CollectionTitle));
-//}
-
-
-//}
-//public class MemoryItem : INotifyPropertyChanged
-//{
-//    private double _value;
-
-//    public double Value
-//    {
-//        get => _value;
-//        set
-//        {
-//            _value = value;
-//            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Value)));
-//        }
-//    }
-
-//    public event PropertyChangedEventHandler? PropertyChanged;
-
-//    public MemoryItem(double value)
-//    {
-//        Value = value;
-//    }
-
-//}
-
-//public class CollectionItemWrapper : INotifyPropertyChanged
-//{
-//    private readonly MemoryItem _memoryItem;
-//    private readonly double _journalValue;
-//    private readonly bool _isMemoryItem;
-
-//    public object Item => _isMemoryItem ? (object)_memoryItem : _journalValue;
-//    public MemoryItem MemoryItem => _isMemoryItem ? _memoryItem : null;
-
-//    public string DisplayValue
-//    {
-//        get
-//        {
-//            if (_isMemoryItem)
-//                return _memoryItem.Value.ToString();
-//            else
-//                return _journalValue.ToString();
-//        }
-//    }
-
-//    public event PropertyChangedEventHandler PropertyChanged;
-
-//    public CollectionItemWrapper(MemoryItem memoryItem)
-//    {
-//        _memoryItem = memoryItem;
-//        _isMemoryItem = true;
-
-//        if (memoryItem != null)
-//            memoryItem.PropertyChanged += OnMemoryItemPropertyChanged;
-//    }
-
-//    public CollectionItemWrapper(double journalValue)
-//    {
-//        _journalValue = journalValue;
-//        _isMemoryItem = false;
-//    }
-
-//    private void OnMemoryItemPropertyChanged(object sender, PropertyChangedEventArgs e)
-//    {
-//        if (e.PropertyName == nameof(MemoryItem.Value))
-//        {
-//            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayValue)));
-//        }
-//    }
-//}
-
-//public class GenericCommand<T> : ICommand
-//{
-//    private readonly Action<T> _execute;
-//    private readonly Func<T, bool> _canExecute;
-
-//    public GenericCommand(Action<T> execute, Func<T, bool> canExecute = null)
-//    {
-//        _execute = execute;
-//        _canExecute = canExecute;
-//    }
-
-//    public event EventHandler CanExecuteChanged;
-
-//    public bool CanExecute(object parameter)
-//    {
-//        return parameter is T && (_canExecute == null || _canExecute((T)parameter));
-//    }
-
-//    public void Execute(object parameter)
-//    {
-//        if (parameter is T typedParameter)
-//        {
-//            _execute(typedParameter);
-//        }
-//    }
-
-//    public void RaiseCanExecuteChanged()
-//    {
-//        CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-//    }
-//}
-
-//public class CalculatorCommand : ICommand
+//public class CalculatorCommand: ICommand
 //{
 //    private Action<string> _action;
 
@@ -564,17 +471,25 @@ public class CalculatorCommand: ICommand
 //        return true;
 //    }
 //}
+public class CalculatorCommand : ICommand
+{
+    private readonly Action<object> _execute;
 
-//public interface ICalc
-//{
-//    double Display { get; }
-//    ICommand InputCommand { get; }
-//    bool IsMemoryEmpty { get; }
-//    ICommand LoadFromJournalCommand { get; }
-//    ObservableCollection<double> Journal { get; }
-//    ObservableCollection<CollectionItemWrapper> CurrentCollection { get; }
-//    string CollectionTitle { get; }
-//    ICommand MemoryCommand { get; }
-//    ICommand DeleteButtonsCommand { get; }
+    // Конструктор для методов с параметром
+    public CalculatorCommand(Action<object> execute)
+    {
+        _execute = execute;
+    }
 
-//}
+    // Конструктор для методов без параметра (лямбда)
+    public CalculatorCommand(Action execute)
+    {
+        _execute = _ => execute();
+    }
+
+    public void Execute(object parameter) => _execute(parameter);
+
+    public bool CanExecute(object parameter) => true;
+
+    public event EventHandler CanExecuteChanged;
+}

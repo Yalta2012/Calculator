@@ -1,18 +1,25 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\yalta2012\\Desktop\\Calculator\\",
+  "WorkspaceRootPath": "D:\\unik\\dotnet\\Calculator\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{0EF31C6B-5C05-4CF4-A7AB-71C14E74A301}|CalculatorBack\\CalculatorBack.csproj|c:\\users\\yalta2012\\desktop\\calculator\\calculatorback\\calc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{0EF31C6B-5C05-4CF4-A7AB-71C14E74A301}|CalculatorBack\\CalculatorBack.csproj|d:\\unik\\dotnet\\calculator\\calculatorback\\calc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0EF31C6B-5C05-4CF4-A7AB-71C14E74A301}|CalculatorBack\\CalculatorBack.csproj|solutionrelative:calculatorback\\calc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FA730571-EE6C-4D70-B100-86DFC985B683}|CalculatorFront\\CalculatorFront.csproj|c:\\users\\yalta2012\\desktop\\calculator\\calculatorfront\\mainpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{FA730571-EE6C-4D70-B100-86DFC985B683}|CalculatorFront\\CalculatorFront.csproj|d:\\unik\\dotnet\\calculator\\calculatorfront\\mainpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{FA730571-EE6C-4D70-B100-86DFC985B683}|CalculatorFront\\CalculatorFront.csproj|solutionrelative:calculatorfront\\mainpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{74122C01-883D-4AA1-8E2B-05EA3599BF3B}|CalculatorTests\\CalculatorTests.csproj|c:\\users\\yalta2012\\desktop\\calculator\\calculatortests\\unittest1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{74122C01-883D-4AA1-8E2B-05EA3599BF3B}|CalculatorTests\\CalculatorTests.csproj|solutionrelative:calculatortests\\unittest1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{FA730571-EE6C-4D70-B100-86DFC985B683}|CalculatorFront\\CalculatorFront.csproj|d:\\unik\\dotnet\\calculator\\calculatorfront\\mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FA730571-EE6C-4D70-B100-86DFC985B683}|CalculatorFront\\CalculatorFront.csproj|solutionrelative:calculatorfront\\mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\IT-mafia\\AppData\\Local\\Temp\\.vsdbgsrc\\a4af913083e3069cbafe073a84a02abce716caa0\\MainPage.xaml.sg.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8AD0AA00-724A-4710-BF2C-9A79265C6D03}|CalculatorTest\\CalculatorTest.csproj|d:\\unik\\dotnet\\calculator\\calculatortest\\test1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8AD0AA00-724A-4710-BF2C-9A79265C6D03}|CalculatorTest\\CalculatorTest.csproj|solutionrelative:calculatortest\\test1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +29,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -38,26 +45,49 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "UnitTest1.cs",
-              "DocumentMoniker": "C:\\Users\\yalta2012\\Desktop\\Calculator\\CalculatorTests\\UnitTest1.cs",
-              "RelativeDocumentMoniker": "CalculatorTests\\UnitTest1.cs",
-              "ToolTip": "C:\\Users\\yalta2012\\Desktop\\Calculator\\CalculatorTests\\UnitTest1.cs",
-              "RelativeToolTip": "CalculatorTests\\UnitTest1.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "MainPage.xaml.sg.cs",
+              "DocumentMoniker": "C:\\Users\\IT-mafia\\AppData\\Local\\Temp\\.vsdbgsrc\\a4af913083e3069cbafe073a84a02abce716caa0\\MainPage.xaml.sg.cs",
+              "ToolTip": "C:\\Users\\IT-mafia\\AppData\\Local\\Temp\\.vsdbgsrc\\a4af913083e3069cbafe073a84a02abce716caa0\\MainPage.xaml.sg.cs [\u0422\u043E\u043B\u044C\u043A\u043E \u0447\u0442\u0435\u043D\u0438\u0435]",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-10T10:20:16.512Z",
+              "WhenOpened": "2025-12-13T07:32:05.347Z",
+              "EditorCaption": " [\u0422\u043E\u043B\u044C\u043A\u043E \u0447\u0442\u0435\u043D\u0438\u0435]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Test1.cs",
+              "DocumentMoniker": "D:\\unik\\dotnet\\Calculator\\CalculatorTest\\Test1.cs",
+              "RelativeDocumentMoniker": "CalculatorTest\\Test1.cs",
+              "ToolTip": "D:\\unik\\dotnet\\Calculator\\CalculatorTest\\Test1.cs",
+              "RelativeToolTip": "CalculatorTest\\Test1.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAywCUAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-11T11:39:28.778Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainPage.xaml.cs",
+              "DocumentMoniker": "D:\\unik\\dotnet\\Calculator\\CalculatorFront\\MainPage.xaml.cs",
+              "RelativeDocumentMoniker": "CalculatorFront\\MainPage.xaml.cs",
+              "ToolTip": "D:\\unik\\dotnet\\Calculator\\CalculatorFront\\MainPage.xaml.cs",
+              "RelativeToolTip": "CalculatorFront\\MainPage.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-11T11:31:08.098Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "MainPage.xaml",
-              "DocumentMoniker": "C:\\Users\\yalta2012\\Desktop\\Calculator\\CalculatorFront\\MainPage.xaml",
+              "DocumentMoniker": "D:\\unik\\dotnet\\Calculator\\CalculatorFront\\MainPage.xaml",
               "RelativeDocumentMoniker": "CalculatorFront\\MainPage.xaml",
-              "ToolTip": "C:\\Users\\yalta2012\\Desktop\\Calculator\\CalculatorFront\\MainPage.xaml",
+              "ToolTip": "D:\\unik\\dotnet\\Calculator\\CalculatorFront\\MainPage.xaml",
               "RelativeToolTip": "CalculatorFront\\MainPage.xaml",
-              "ViewState": "AgIAAGMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAAAAoBAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-12-10T07:06:18.487Z",
               "EditorCaption": ""
@@ -66,11 +96,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Calc.cs",
-              "DocumentMoniker": "C:\\Users\\yalta2012\\Desktop\\Calculator\\CalculatorBack\\Calc.cs",
+              "DocumentMoniker": "D:\\unik\\dotnet\\Calculator\\CalculatorBack\\Calc.cs",
               "RelativeDocumentMoniker": "CalculatorBack\\Calc.cs",
-              "ToolTip": "C:\\Users\\yalta2012\\Desktop\\Calculator\\CalculatorBack\\Calc.cs",
+              "ToolTip": "D:\\unik\\dotnet\\Calculator\\CalculatorBack\\Calc.cs",
               "RelativeToolTip": "CalculatorBack\\Calc.cs",
-              "ViewState": "AgIAAFQAAAAAAAAAAIAzwGoAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAACMAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-10T06:43:44.02Z",
               "EditorCaption": ""

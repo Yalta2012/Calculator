@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CalculatorFront.MainPage"
              BackgroundColor="#3A484A"
+             
              >
 
     <ContentPage.Resources>
@@ -38,8 +39,8 @@
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="Padding" Value="10"/>
                 <Setter Property="CornerRadius" Value="17"/>
-                <Setter Property="Command" Value=""/>
                 <Setter Property="CommandParameter" Value="{Binding Source={RelativeSource Self}, Path=Text}"/>
+                <Setter Property="Command" Value="{Binding InputCommand}"/>
 
 
                 <Setter Property="Shadow">
@@ -86,55 +87,54 @@
              
             <Style x:Key="DigitButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
                 <Setter Property="BackgroundColor" Value="{StaticResource BalatroCardGrey}"/>
-                <Setter Property="Command" Value="{Binding InputDigitCommand}"/>
             </Style>
 
-            
+
             <Style x:Key="OperationButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
                 <Setter Property="BackgroundColor" Value="{StaticResource BalatroBlue}"/>
             </Style>
 
-
-            <Style x:Key="UnaryOperationButtonStyle" TargetType="Button" BasedOn="{StaticResource OperationButtonStyle}">
-                <Setter Property="Command" Value="{Binding InputUnaryOperatorCommand}"/>
-            </Style>
-
-            <Style x:Key="BinartOperationButtonStyle" TargetType="Button" BasedOn="{StaticResource OperationButtonStyle}">
-                <Setter Property="Command" Value="{Binding InputBinaryOperatorCommand}"/>
-
-            </Style>
-
-            
             <Style x:Key="MemoryButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
                 <Setter Property="BackgroundColor" Value="{StaticResource BalatroOrange}"/>
             </Style>
 
             <Style x:Key="ClearButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
                 <Setter Property="BackgroundColor" Value="{StaticResource BalatroRed}"/>
-                <Setter Property="Command" Value="{Binding ClearCommand}"/>
             </Style>
 
             <Style x:Key="EqualButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
                 <Setter Property="BackgroundColor" Value="{StaticResource BalatroGreen}"/>
-                <Setter Property="Command" Value="{Binding CalculateCommand}"/>
-
             </Style>
             
-            <Style TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}"/>
-            <Style TargetType="Label" BasedOn="{StaticResource BaseLabelStyle}"/>
+            <Style x:Key="MemoryElementButtoStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+                <Setter Property="BackgroundColor" Value="{StaticResource BalatroDarkGrey}"/>
+                <Setter Property="BorderColor" Value="#00000000"/>
+                <Setter Property="IsVisible" Value="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ShowMemoryMemoryButtons}"/>
+                <Setter Property="FontSize" Value="10"/>
+            </Style>
+
 
         </ResourceDictionary>
     </ContentPage.Resources>
 
 
         <Grid RowDefinitions="*,*,*,*,*,*,*,*"
-      ColumnDefinitions="*, *, *, *"
+      ColumnDefinitions="*, *, *, *, *, *"
       Margin="20"
       VerticalOptions="Fill"
       HorizontalOptions="Fill"
          
       >
-            <Label Text="{Binding Display}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"/>
+        <Border Grid.Row="0" 
+                Grid.Column="0" 
+                Grid.ColumnSpan="4"
+                BackgroundColor="{StaticResource BalatroDarkGrey}"
+                StrokeShape="RoundRectangle 15"
+                Stroke="{StaticResource BalatroDarkGrey}">
+            <Label Text="{Binding Display}"  FontSize="20"
+                   Style="{StaticResource BaseLabelStyle}"/>
+            
+        </Border>
             <Grid Grid.Row="1" Grid.Column="0"
             RowDefinitions="Auto"
           ColumnDefinitions="*,*,*,*,*"
@@ -148,37 +148,140 @@
                 <Button Text="MS" Grid.Column="4" Style="{StaticResource MemoryButtonStyle}"/>
             </Grid>
 
-            <Button Text="%" Grid.Row="2" Grid.Column="0" Style="{StaticResource UnaryOperationButtonStyle}"/>
+        <Button Text="%" Grid.Row="2" Grid.Column="0" Style="{StaticResource OperationButtonStyle}"/>
             <Button Text="CE" Grid.Row="2" Grid.Column="1" Style="{StaticResource ClearButtonStyle}"/>
             <Button Text="C" Grid.Row="2" Grid.Column="2" Style="{StaticResource ClearButtonStyle}"/>
             <Button Text="⌫" Grid.Row="2" Grid.Column="3" Style="{StaticResource ClearButtonStyle}"/>
 
-            <Button Text="1/x" Grid.Row="3" Grid.Column="0" Style="{StaticResource UnaryOperationButtonStyle}"/>
-            <Button Text="x^2" Grid.Row="3" Grid.Column="1" Style="{StaticResource UnaryOperationButtonStyle}"/>
-            <Button Text="√x" Grid.Row="3" Grid.Column="2" Style="{StaticResource UnaryOperationButtonStyle}"/>
-            <Button Text="/" Grid.Row="3" Grid.Column="3" Style="{StaticResource BinartOperationButtonStyle}"/>
+        <Button Text="1/x" Grid.Row="3" Grid.Column="0" Style="{StaticResource OperationButtonStyle}"/>
+        <Button Text="x^2" Grid.Row="3" Grid.Column="1" Style="{StaticResource OperationButtonStyle}"/>
+        <Button Text="√x" Grid.Row="3" Grid.Column="2" Style="{StaticResource OperationButtonStyle}"/>
+        <Button Text="/" Grid.Row="3" Grid.Column="3" Style="{StaticResource OperationButtonStyle}"/>
 
             <Button Text="7" Grid.Row="4" Grid.Column="0" Style="{StaticResource DigitButtonStyle}"/>
             <Button Text="8" Grid.Row="4" Grid.Column="1" Style="{StaticResource DigitButtonStyle}"/>
             <Button Text="9" Grid.Row="4" Grid.Column="2" Style="{StaticResource DigitButtonStyle}"/>
-            <Button Text="*" Grid.Row="4" Grid.Column="3" Style="{StaticResource BinartOperationButtonStyle}"/>
+        <Button Text="*" Grid.Row="4" Grid.Column="3" Style="{StaticResource OperationButtonStyle}"/>
 
             <Button Text="4" Grid.Row="5" Grid.Column="0" Style="{StaticResource DigitButtonStyle}"/>
             <Button Text="5" Grid.Row="5" Grid.Column="1" Style="{StaticResource DigitButtonStyle}"/>
             <Button Text="6" Grid.Row="5" Grid.Column="2" Style="{StaticResource DigitButtonStyle}"/>
-            <Button Text="-" Grid.Row="5" Grid.Column="3" Style="{StaticResource BinartOperationButtonStyle}"/>
+        <Button Text="-" Grid.Row="5" Grid.Column="3" Style="{StaticResource OperationButtonStyle}"/>
 
             <Button Text="1" Grid.Row="6" Grid.Column="0" Style="{StaticResource DigitButtonStyle}"/>
             <Button Text="2" Grid.Row="6" Grid.Column="1" Style="{StaticResource DigitButtonStyle}"/>
             <Button Text="3" Grid.Row="6" Grid.Column="2" Style="{StaticResource DigitButtonStyle}"/>
-            <Button Text="+" Grid.Row="6" Grid.Column="3" Style="{StaticResource BinartOperationButtonStyle}"/>
+        <Button Text="+" Grid.Row="6" Grid.Column="3" Style="{StaticResource OperationButtonStyle}"/>
 
-            <Button Text="+/-" Grid.Row="7" Grid.Column="0" Style="{StaticResource UnaryOperationButtonStyle}"/>
+        <Button Text="+/-" Grid.Row="7" Grid.Column="0" Style="{StaticResource OperationButtonStyle}"/>
             <Button Text="0" Grid.Row="7" Grid.Column="1" Style="{StaticResource DigitButtonStyle}"/>
             <Button Text="," Grid.Row="7" Grid.Column="2" Style="{StaticResource DigitButtonStyle}"/>
             <Button Text="=" Grid.Row="7" Grid.Column="3" Style="{StaticResource EqualButtonStyle}"/>
 
+        <Grid
+            Grid.Column="4"
+            Grid.ColumnSpan="2"
+            Grid.Row="0"
+            Grid.RowSpan="8"
+            RowDefinitions="*,*,*,*,*,*,*,*,*"
+            Margin="10,0,0,0"
+           >
+            <Border
+                Grid.Row="0"
+                Grid.RowSpan="8"
+                Grid.ColumnSpan="1"
+                BackgroundColor="{StaticResource BalatroDarkGrey}"
+                StrokeShape="RoundRectangle 15"
+                Stroke="{StaticResource BalatroDarkGrey}"
+                >
+
+                <Grid 
+                        ColumnDefinitions="*"
+                        RowDefinitions="Auto, *"
+                        Margin="10">
+                    
+                <Grid
+                        Grid.Row="0"
+                        
+                        ColumnDefinitions="*,*"
+                        RowDefinitions="*"
+                    >
+                    <Button Text="Journal" Style="{StaticResource MemoryButtonStyle }" Grid.Column="0"  Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ShowJournalCommand}"/>
+                        <Button Text ="Memory"  Style="{StaticResource MemoryButtonStyle }" Grid.Column="1" Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ShowMemoryCommand}"/>
+                </Grid>
+
+                    <CollectionView ItemsSource="{Binding CurrentCollection}"
+                                        Grid.Row="1"
+                                        >
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                <Grid
+                                        ColumnDefinitions="*,*,*,*,*,*"
+                                        RowDefinitions="*, *, *"
+                                                                               VerticalOptions="End"
+>
+
+
+                                    <Button         Text=""
+                                                    Style="{StaticResource DigitButtonStyle}"
+                                                    Background="#3A484A"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.LoadFromJournalCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                
+                                                    Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Grid.ColumnSpan="6"
+                                                    Grid.RowSpan="3"
+                                        />
+                                    <Label Text="{Binding Display}"
+                                           Grid.Row="0"
+                                           Grid.RowSpan="2"
+                                           Grid.Column="0"
+                                           Grid.ColumnSpan="6"
+                                           Style="{StaticResource BaseLabelStyle}"
+                                           BackgroundColor="#00000000"
+                                           FontSize="20"
+                                           Margin="0"
+                                           />
+
+                                    <Grid 
+                                        ColumnDefinitions="*,*,*"
+                                        Grid.Row="2"
+                                        Grid.Column="3"
+                                        Grid.ColumnSpan="3">
+                                        
+                                        <Button Text="MC"
+                                        Style="{StaticResource MemoryElementButtoStyle }"
+                                        Grid.Column="0"
+                                        />
+                                        <Button Text="M+"
+                                        Style="{StaticResource MemoryElementButtoStyle }"
+                                        Grid.Column="1"
+                                        />
+                                       <Button Text="M-"
+                                        Style="{StaticResource MemoryElementButtoStyle }"
+                                        Grid.Column="2"
+                                        />
+                                    </Grid>
+                                            
+                                        
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Grid>
+
+            </Border>
+
+            <Button Text="Clear"
+                    Command="{Binding ClearCurrentCollectionCommand}"
+                    Grid.Row="8"
+                    Grid.RowSpan="1"
+                    Style="{StaticResource MemoryButtonStyle }"
+                    />
         </Grid>
+        
+    </Grid>
 
 
 </ContentPage>

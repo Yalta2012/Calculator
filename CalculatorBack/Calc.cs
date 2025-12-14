@@ -21,6 +21,8 @@ public class JournalItem : INotifyPropertyChanged
     public String? SecondOperator { get; set; }
     public String? Operator { get; set; }
     private string? _display;
+    public CalculatorCondition Condition { get; set; }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public string? Display
@@ -35,7 +37,6 @@ public class JournalItem : INotifyPropertyChanged
             }
         }
     }
-    public CalculatorCondition Condition { get; set; }
     public JournalItem(String fo, String so, String op, String dsp, CalculatorCondition cnd) {
         FirstOperator = fo;
         SecondOperator = so;
@@ -54,9 +55,27 @@ public class JournalItem : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
+
+
 }
 
-public class Calc : INotifyPropertyChanged // ICalc, 
+public interface ICalc: INotifyPropertyChanged
+{
+    public ICommand InputCommand { get;}
+    public ICommand LoadFromJournalCommand { get;}
+    public ICommand ClearCurrentCollectionCommand { get;}
+
+    public ICommand ShowJournalCommand { get;}
+    public ICommand ShowMemoryCommand { get;}
+    public ICommand RemoveMemoryItemCommand { get;}
+    public ICommand IncreaseMemoryItemCommand { get;}
+    public ICommand DecreaseMemoryItemCommand { get;}
+
+    public ObservableCollection<JournalItem> CurrentCollection { get; }
+
+    public String Display { get;}
+}
+public class Calc : ICalc
 {
     private String _display = "0";
     private String? _firstOperand = null;
@@ -71,16 +90,20 @@ public class Calc : INotifyPropertyChanged // ICalc,
    
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public ObservableCollection<JournalItem> Journal { get; private set; } = new ObservableCollection<JournalItem>();
-    public ObservableCollection<JournalItem> Memory { get; private set; } = new ObservableCollection<JournalItem>();
+    private ObservableCollection<JournalItem> Journal { get;} = new ObservableCollection<JournalItem>();
+    private ObservableCollection<JournalItem> Memory { get;} = new ObservableCollection<JournalItem>();
 
     public ObservableCollection<JournalItem> CurrentCollection { get; private set; } = new ObservableCollection<JournalItem>();
-    public ICommand InputCommand { get; private set; }
-    public ICommand LoadFromJournalCommand { get; private set; }
-    public ICommand ClearCurrentCollectionCommand { get; private set; }
 
-    public ICommand ShowJournalCommand { get; private set; }
-    public ICommand ShowMemoryCommand { get; private set; }
+    public ICommand InputCommand { get; }
+    public ICommand LoadFromJournalCommand { get; }
+    public ICommand ClearCurrentCollectionCommand { get; }
+
+    public ICommand ShowJournalCommand { get; }
+    public ICommand ShowMemoryCommand { get; }
+    public ICommand RemoveMemoryItemCommand { get; }
+    public ICommand IncreaseMemoryItemCommand { get; }
+    public ICommand DecreaseMemoryItemCommand { get; }
 
     public String Display
     {
@@ -128,11 +151,30 @@ public class Calc : INotifyPropertyChanged // ICalc,
         ShowJournalCommand = new Command(ShowJournal);
         ShowMemoryCommand = new Command(ShowMemory);
 
+        RemoveMemoryItemCommand = new Command<JournalItem>(RemoveMemoryItem);
+        IncreaseMemoryItemCommand = new Command<JournalItem>(IncreaseMemoryItem);
+        DecreaseMemoryItemCommand = new Command<JournalItem>(DecreaseMemoryItem);
 
         //MemoryCommand = new Command<String>(MemoryInput);
         CurrentCollection = Journal;
 
     }  
+
+    private void RemoveMemoryItem(JournalItem item)
+    {
+        Memory.Remove(item);
+        OnPropertyChanged(nameof(Memory));
+    }
+    private void IncreaseMemoryItem(JournalItem item)
+    {
+        item.Display = Calculate(item.Display, "+", Display);
+        OnPropertyChanged(nameof(Memory));
+    }
+    private void DecreaseMemoryItem(JournalItem item)
+    {
+        item.Display = Calculate(item.Display, "-", Display);
+        OnPropertyChanged(nameof(Memory));
+    }
 
     private void MemoryInput(String inputString)
     {
@@ -200,6 +242,15 @@ public class Calc : INotifyPropertyChanged // ICalc,
         return result.ToString();
     }
 
+    private String CalculatePercent(String first, String op, String second)
+    {
+        if (first == null) return "0";
+        if (op == null) return Calculate(first, "%", second);
+        if ("+-".Contains(op)) return  Calculate(first, "%", second);
+        return Calculate("1", "%", second);
+    }
+
+
     private String Calculate(String first, String op, String second)
     {
         var result = _binaryOperationMap[op](Double.Parse(first), Double.Parse(second));
@@ -235,7 +286,7 @@ public class Calc : INotifyPropertyChanged // ICalc,
         }
         if(inputString == "%")
         {
-            CalculatePercent();
+            InputPercent();
             return;
         }
         if("MCMRM+M-MS".Contains(inputString))
@@ -256,10 +307,11 @@ public class Calc : INotifyPropertyChanged // ICalc,
     }
     public void InputDigit(String inputString)
     {
+
         if (_condition == CalculatorCondition.Error || _condition == CalculatorCondition.Equal)
         {
             Display = inputString;
-            _firstOperand = null;
+            //_firstOperand = null;
             _secondOperand = null;
             _operator = null;
         }
@@ -292,26 +344,41 @@ public class Calc : INotifyPropertyChanged // ICalc,
 
     }
 
-    private void CalculatePercent()
+
+    private void InputPercent()
     {
         if (_condition == CalculatorCondition.Error) return;
         _condition = CalculatorCondition.Operator;
-        Display = Calculate(_firstOperand ?? "0", "%", Display);
-        _firstOperand = null;
-        _secondOperand = null;
-        _operator = null;
+        Display = CalculatePercent(_firstOperand, _operator, Display);
         OnPropertyChanged(nameof(Display));
 
     }
     private void InputUnaryOperator(String inputString)
     {
-        if (Display == "0" && inputString == "+/-" || _condition == CalculatorCondition.Error) return;
-        _condition = CalculatorCondition.Operator;
-        Display = Calculate(Display, inputString);
-        _firstOperand = null;
-        _secondOperand = null;
-        _operator = null;
+        if (_condition == CalculatorCondition.Error) return;
+        _condition = CalculatorCondition.Equal;
+        if (inputString == "+/-")
+        {
+            if (Display == "0") return;
+            if (Display.StartsWith("0,"))
+            {
+                Display = "-" + Display;
+            }
+            else if (Display.StartsWith("-0,"))
+            {
+                Display = Display.Substring(1);
+            }
+
+        }
+        else{
+            Display = Calculate(Display, inputString);
+
+        }
+        //_firstOperand = null;
+        //_secondOperand = null;
+        //_operator = null;
         //if(_condition != CalculatorCondition.Error) SaveToJournal();
+        Normalize();
         OnPropertyChanged(nameof(Display));
 
     }
@@ -330,7 +397,7 @@ public class Calc : INotifyPropertyChanged // ICalc,
         }
         else
         {
-            if(_condition != CalculatorCondition.Equal) {
+            if(_condition != CalculatorCondition.Equal && _operator != null) {
                 Display = Calculate(_firstOperand, _operator, Display);
                 if (_condition != CalculatorCondition.Error) SaveToJournal();
 
@@ -340,7 +407,7 @@ public class Calc : INotifyPropertyChanged // ICalc,
         }
         _operator = inputString;
 
-        if(_condition != CalculatorCondition.Equal)
+        if(_condition != CalculatorCondition.Error)
             _condition = CalculatorCondition.Operator;
         Normalize();
         OnPropertyChanged(nameof(Display));
@@ -351,9 +418,9 @@ public class Calc : INotifyPropertyChanged // ICalc,
     {
         if (_condition == CalculatorCondition.Error) return;
 
-        if(_firstOperand == null /*|| _operator == null*/)
+        if(_firstOperand == null || (_condition == CalculatorCondition.Equal && _firstOperand != null && _secondOperand == null && _operator == null)/*|| _operator == null*/)
         {
-           //_firstOperand = Display;
+           _firstOperand = Display;
             SaveToJournal();
 
         }
@@ -389,6 +456,7 @@ public class Calc : INotifyPropertyChanged // ICalc,
 
     public void InputClear(String inputString)
     {
+        var new_cond = CalculatorCondition.Input;
         switch (inputString)
         {
             case "CE":
@@ -401,6 +469,16 @@ public class Calc : INotifyPropertyChanged // ICalc,
                 _operator = null;
                 break;
             case "⌫":
+                if (_condition == CalculatorCondition.Error)
+                {
+                    Display = "0";
+                    break;
+                }
+                if (_condition != CalculatorCondition.Input)
+                {
+                    new_cond = _condition;
+                    break;
+                }
                 if (Display.StartsWith("-") && Display.Length == 2 || Display.Length == 1)
                     Display = "0";
                 else
@@ -411,9 +489,7 @@ public class Calc : INotifyPropertyChanged // ICalc,
         }
         //Normalize();
         OnPropertyChanged(nameof(Display));
-        _condition = CalculatorCondition.Input;
-        _isFloat = false;
-
+        _condition = new_cond;
     }
 
 
@@ -421,6 +497,7 @@ public class Calc : INotifyPropertyChanged // ICalc,
     {
         _isFloat = Display.Contains(",");
         if (Display == ",") Display = "0,";
+        if (Display == "-0") Display = "0";
     }
     private void OnPropertyChanged(string propertyName)
     {
@@ -432,7 +509,7 @@ public class Calc : INotifyPropertyChanged // ICalc,
         _firstOperand = journalItem.FirstOperator;
         _secondOperand = journalItem.SecondOperator;
         _operator = journalItem.Operator;
-        _condition = journalItem.Condition;
+        _condition = CalculatorCondition.Equal;
         Display = journalItem.Display;
         OnPropertyChanged(nameof(Display));
     }

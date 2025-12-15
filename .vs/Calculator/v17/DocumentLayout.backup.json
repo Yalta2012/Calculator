@@ -1,21 +1,21 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\unik\\dotnet\\Calculator\\",
+  "WorkspaceRootPath": "C:\\Users\\yalta2012\\Desktop\\Calculator\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{0EF31C6B-5C05-4CF4-A7AB-71C14E74A301}|CalculatorBack\\CalculatorBack.csproj|d:\\unik\\dotnet\\calculator\\calculatorback\\calc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{0EF31C6B-5C05-4CF4-A7AB-71C14E74A301}|CalculatorBack\\CalculatorBack.csproj|c:\\users\\yalta2012\\desktop\\calculator\\calculatorback\\calc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0EF31C6B-5C05-4CF4-A7AB-71C14E74A301}|CalculatorBack\\CalculatorBack.csproj|solutionrelative:calculatorback\\calc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8AD0AA00-724A-4710-BF2C-9A79265C6D03}|CalculatorTest\\CalculatorTest.csproj|d:\\unik\\dotnet\\calculator\\calculatortest\\test1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{8AD0AA00-724A-4710-BF2C-9A79265C6D03}|CalculatorTest\\CalculatorTest.csproj|c:\\users\\yalta2012\\desktop\\calculator\\calculatortest\\test1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8AD0AA00-724A-4710-BF2C-9A79265C6D03}|CalculatorTest\\CalculatorTest.csproj|solutionrelative:calculatortest\\test1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FA730571-EE6C-4D70-B100-86DFC985B683}|CalculatorFront\\CalculatorFront.csproj|d:\\unik\\dotnet\\calculator\\calculatorfront\\mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{FA730571-EE6C-4D70-B100-86DFC985B683}|CalculatorFront\\CalculatorFront.csproj|c:\\users\\yalta2012\\desktop\\calculator\\calculatorfront\\mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FA730571-EE6C-4D70-B100-86DFC985B683}|CalculatorFront\\CalculatorFront.csproj|solutionrelative:calculatorfront\\mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FA730571-EE6C-4D70-B100-86DFC985B683}|CalculatorFront\\CalculatorFront.csproj|d:\\unik\\dotnet\\calculator\\calculatorfront\\mainpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{FA730571-EE6C-4D70-B100-86DFC985B683}|CalculatorFront\\CalculatorFront.csproj|c:\\users\\yalta2012\\desktop\\calculator\\calculatorfront\\mainpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{FA730571-EE6C-4D70-B100-86DFC985B683}|CalculatorFront\\CalculatorFront.csproj|solutionrelative:calculatorfront\\mainpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
@@ -44,50 +44,47 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "Test1.cs",
-              "DocumentMoniker": "D:\\unik\\dotnet\\Calculator\\CalculatorTest\\Test1.cs",
+              "DocumentMoniker": "C:\\Users\\yalta2012\\Desktop\\Calculator\\CalculatorTest\\Test1.cs",
               "RelativeDocumentMoniker": "CalculatorTest\\Test1.cs",
-              "ToolTip": "D:\\unik\\dotnet\\Calculator\\CalculatorTest\\Test1.cs",
+              "ToolTip": "C:\\Users\\yalta2012\\Desktop\\Calculator\\CalculatorTest\\Test1.cs",
               "RelativeToolTip": "CalculatorTest\\Test1.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T08:37:44.949Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-14T08:37:44.949Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "MainPage.xaml.cs",
-              "DocumentMoniker": "D:\\unik\\dotnet\\Calculator\\CalculatorFront\\MainPage.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\yalta2012\\Desktop\\Calculator\\CalculatorFront\\MainPage.xaml.cs",
               "RelativeDocumentMoniker": "CalculatorFront\\MainPage.xaml.cs",
-              "ToolTip": "D:\\unik\\dotnet\\Calculator\\CalculatorFront\\MainPage.xaml.cs",
+              "ToolTip": "C:\\Users\\yalta2012\\Desktop\\Calculator\\CalculatorFront\\MainPage.xaml.cs",
               "RelativeToolTip": "CalculatorFront\\MainPage.xaml.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-11T11:31:08.098Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-11T11:31:08.098Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "MainPage.xaml",
-              "DocumentMoniker": "D:\\unik\\dotnet\\Calculator\\CalculatorFront\\MainPage.xaml",
+              "DocumentMoniker": "C:\\Users\\yalta2012\\Desktop\\Calculator\\CalculatorFront\\MainPage.xaml",
               "RelativeDocumentMoniker": "CalculatorFront\\MainPage.xaml",
-              "ToolTip": "D:\\unik\\dotnet\\Calculator\\CalculatorFront\\MainPage.xaml",
+              "ToolTip": "C:\\Users\\yalta2012\\Desktop\\Calculator\\CalculatorFront\\MainPage.xaml",
               "RelativeToolTip": "CalculatorFront\\MainPage.xaml",
               "ViewState": "AgIAACcAAAAAAAAAAAAAABYAAABSAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-12-10T07:06:18.487Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-10T07:06:18.487Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Calc.cs",
-              "DocumentMoniker": "D:\\unik\\dotnet\\Calculator\\CalculatorBack\\Calc.cs",
+              "DocumentMoniker": "C:\\Users\\yalta2012\\Desktop\\Calculator\\CalculatorBack\\Calc.cs",
               "RelativeDocumentMoniker": "CalculatorBack\\Calc.cs",
-              "ToolTip": "D:\\unik\\dotnet\\Calculator\\CalculatorBack\\Calc.cs",
+              "ToolTip": "C:\\Users\\yalta2012\\Desktop\\Calculator\\CalculatorBack\\Calc.cs",
               "RelativeToolTip": "CalculatorBack\\Calc.cs",
-              "ViewState": "AgIAACwBAAAAAAAAAAAIwDoBAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABcBAAAAAAAAAAAIwDsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-10T06:43:44.02Z",
               "EditorCaption": ""

@@ -105,6 +105,16 @@ public class Calc : ICalc
     public ICommand IncreaseMemoryItemCommand { get; }
     public ICommand DecreaseMemoryItemCommand { get; }
 
+    public String MemoryButonColor
+    {
+        get => _showMemoryMemoryButtons ? "#FF5900" : "#ABC2CF";
+
+    }
+    public String JournalButonColor
+    {
+        get => _showMemoryMemoryButtons ? "#ABC2CF" : "#FF5900";
+
+    }
     public String Display
     {
         get => _display;
@@ -185,12 +195,12 @@ public class Calc : ICalc
                 break;
             case "MR":
                 if (Memory.Count() > 0)
-                    Display = Memory.Last().Display;
+                    Display = Memory.First().Display;
                 break;
             case "M+":
                 if (Memory.Count() > 0)
                 {
-                    Memory.Last().Display = Calculate(Memory.Last().Display, "+", Display);
+                    Memory.First().Display = Calculate(Memory.First().Display, "+", Display);
                     CurrentCollection = Memory;
                     OnPropertyChanged(nameof(CurrentCollection));
                 }
@@ -199,14 +209,14 @@ public class Calc : ICalc
             case "M-":
                 if (Memory.Count() > 0)
                 {
-                    Memory.Last().Display = Calculate(Memory.Last().Display, "-", Display);
+                    Memory.First().Display = Calculate(Memory.First().Display, "-", Display);
                     CurrentCollection = Memory;
                     OnPropertyChanged(nameof(CurrentCollection));
                 }
 
                 break;
             case "MS":
-                Memory.Add(new JournalItem(null, null, null, Display, CalculatorCondition.Input));
+                Memory.Insert(0,new JournalItem(null, null, null, Display, CalculatorCondition.Input));
                 _condition = CalculatorCondition.Equal;
                 break;
             default:
@@ -217,15 +227,19 @@ public class Calc : ICalc
     private void ShowJournal()
     {
         _showMemoryMemoryButtons = false;
-        CurrentCollection = Journal;
+        CurrentCollection = Journal; 
         OnPropertyChanged(nameof(CurrentCollection));
+        OnPropertyChanged(nameof(MemoryButonColor));
+        OnPropertyChanged(nameof(JournalButonColor));
+
     }
     private void ShowMemory()
     {
         _showMemoryMemoryButtons = true;
         CurrentCollection = Memory;
         OnPropertyChanged(nameof(CurrentCollection));
-
+        OnPropertyChanged(nameof(MemoryButonColor));
+        OnPropertyChanged(nameof(JournalButonColor));
     }
     private String Calculate(String first, String op)
     {
@@ -516,7 +530,7 @@ public class Calc : ICalc
 
     private void SaveToJournal()
     {
-        Journal.Add( new JournalItem(_firstOperand, _secondOperand, _operator, _display, _condition));
+        Journal.Insert(0, new JournalItem(_firstOperand, _secondOperand, _operator, _display, _condition));
         OnPropertyChanged(nameof(Journal));
     }
 

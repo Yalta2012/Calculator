@@ -210,8 +210,10 @@
                         ColumnDefinitions="*,*"
                         RowDefinitions="*"
                     >
-                        <Button Text="Journal" Style="{StaticResource MemoryButtonStyle }" Grid.Column="0"  Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ShowJournalCommand}"/>
-                        <Button Text ="Memory"  Style="{StaticResource MemoryButtonStyle }" Grid.Column="1" Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ShowMemoryCommand}"/>
+                        <Button BackgroundColor="{Binding JournalButonColor}"
+                            Text="Journal" Style="{StaticResource MemoryButtonStyle }" Grid.Column="0"  Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ShowJournalCommand}"/>
+                        <Button BackgroundColor="{Binding MemoryButonColor}"
+                            Text ="Memory"  Style="{StaticResource MemoryButtonStyle }" Grid.Column="1" Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ShowMemoryCommand}"/>
                     </Grid>
 
                     <CollectionView ItemsSource="{Binding CurrentCollection}"

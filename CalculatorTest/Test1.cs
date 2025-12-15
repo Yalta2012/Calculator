@@ -592,6 +592,33 @@ namespace CalculatorTest
 
             Assert.AreEqual("19,8", calc.Display);
         }
+
+        [TestMethod]
+        public void Память_MPLUS()
+        {
+            var calc = new Calc();
+            calc.InputCommand.Execute("2");
+            calc.InputCommand.Execute("2");
+            calc.InputCommand.Execute("0");
+            calc.InputCommand.Execute("MS");
+            calc.InputCommand.Execute("C");
+            calc.InputCommand.Execute("3");
+            calc.InputCommand.Execute("4");
+            calc.InputCommand.Execute("MS");
+            calc.InputCommand.Execute("C");
+            calc.InputCommand.Execute("9");
+            calc.InputCommand.Execute("8");
+            calc.InputCommand.Execute("MS");
+            calc.InputCommand.Execute("C");
+            calc.InputCommand.Execute("1");
+            calc.ShowMemoryCommand.Execute("");
+            calc.IncreaseMemoryItemCommand.Execute(calc.CurrentCollection[1]);
+            calc.IncreaseMemoryItemCommand.Execute(calc.CurrentCollection[1]);
+            calc.LoadFromJournalCommand.Execute(calc.CurrentCollection[1]);
+
+            Assert.AreEqual("36", calc.Display);
+        }
+
     }
 }
 
